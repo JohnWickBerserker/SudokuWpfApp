@@ -7,10 +7,25 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="533">
     <Window.Resources>
-        <Style x:Key="InnerMatrix3x3Style" TargetType="{x:Type Border}">
-            <Setter Property="DataContext">
+
+        <Style x:Key="CellStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
                 <Setter.Value>
-                        <Grid ShowGridLines="true">
+                    <ControlTemplate>
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <Button Background="White" BorderBrush="{x:Null}"></Button>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="InnerMatrix3x3Style" TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border BorderThickness="1" BorderBrush="Black">
+                        <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -21,40 +36,56 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
+                            <ContentControl Grid.Row="0" Grid.Column="0" Style="{StaticResource CellStyle}"/>
+                            <ContentControl Grid.Row="0" Grid.Column="1" Style="{StaticResource CellStyle}"/>
+                            <ContentControl Grid.Row="0" Grid.Column="2" Style="{StaticResource CellStyle}"/>
+                            <ContentControl Grid.Row="1" Grid.Column="0" Style="{StaticResource CellStyle}"/>
+                            <ContentControl Grid.Row="1" Grid.Column="1" Style="{StaticResource CellStyle}"/>
+                            <ContentControl Grid.Row="1" Grid.Column="2" Style="{StaticResource CellStyle}"/>
+                            <ContentControl Grid.Row="2" Grid.Column="0" Style="{StaticResource CellStyle}"/>
+                            <ContentControl Grid.Row="2" Grid.Column="1" Style="{StaticResource CellStyle}"/>
+                            <ContentControl Grid.Row="2" Grid.Column="2" Style="{StaticResource CellStyle}"/>
                         </Grid>
+                        </Border>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
+        <Style x:Key="BoardStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <ContentControl Grid.Row="0" Grid.Column="0" Style="{StaticResource InnerMatrix3x3Style}" />
+                                <ContentControl Grid.Row="0" Grid.Column="1" Style="{StaticResource InnerMatrix3x3Style}" />
+                                <ContentControl Grid.Row="0" Grid.Column="2" Style="{StaticResource InnerMatrix3x3Style}" />
+                                <ContentControl Grid.Row="1" Grid.Column="0" Style="{StaticResource InnerMatrix3x3Style}" />
+                                <ContentControl Grid.Row="1" Grid.Column="1" Style="{StaticResource InnerMatrix3x3Style}" />
+                                <ContentControl Grid.Row="1" Grid.Column="2" Style="{StaticResource InnerMatrix3x3Style}" />
+                                <ContentControl Grid.Row="2" Grid.Column="0" Style="{StaticResource InnerMatrix3x3Style}" />
+                                <ContentControl Grid.Row="2" Grid.Column="1" Style="{StaticResource InnerMatrix3x3Style}" />
+                                <ContentControl Grid.Row="2" Grid.Column="2" Style="{StaticResource InnerMatrix3x3Style}" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        
-    <Grid Width="200" Height="200" ShowGridLines="True">
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-            <Border Style="{StaticResource InnerMatrix3x3Style}" BorderThickness="1" BorderBrush="Black"></Border>
-
-    </Grid>
-
-        <StackPanel Grid.Column="1" Orientation="Vertical" Width="200" Height="200">
-            <StackPanel Grid.Row="0" VerticalAlignment="Stretch"></StackPanel>
-            <StackPanel Grid.Row="1" VerticalAlignment="Stretch"></StackPanel>
-            <StackPanel Grid.Row="2" VerticalAlignment="Stretch"></StackPanel>
-        </StackPanel>
-
+        <ContentControl Width="300" Height="300" Style="{StaticResource BoardStyle}"/>
     </Grid>
 </Window>
