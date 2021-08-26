@@ -5,15 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SudokuWpfApp.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="533">
+        Title="MainWindow" Height="450" Width="533" Background="{DynamicResource backgroundBrush}">
     <Window.Resources>
 
+        <ImageSource x:Key="backgroundImageSource">pack://siteoforigin:,,,/background.jpg</ImageSource>
+        <ImageBrush x:Key="backgroundBrush" ImageSource="{DynamicResource backgroundImageSource}" Stretch="UniformToFill"></ImageBrush>
+
+        <Style x:Key="CellButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <TextBlock TextAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <Style x:Key="CellStyle" TargetType="{x:Type ContentControl}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Border BorderBrush="Black" BorderThickness="1">
-                            <Button Background="White" BorderBrush="{x:Null}"></Button>
+                        <Border BorderBrush="White" BorderThickness="1">
+                            <Button Style="{StaticResource CellButtonStyle}"></Button>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -24,7 +42,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Border BorderThickness="1" BorderBrush="Black">
+                        <Border BorderThickness="1" BorderBrush="White">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
@@ -56,7 +74,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Border BorderBrush="Black" BorderThickness="1">
+                        <Border BorderBrush="White" BorderThickness="1">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -86,6 +104,38 @@
 
     </Window.Resources>
     <Grid>
-        <ContentControl Width="300" Height="300" Style="{StaticResource BoardStyle}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="120"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Width="400" Height="400">
+            <Rectangle Fill="Black" Margin="8" Opacity="0.6">
+                <Rectangle.Effect>
+                    <BlurEffect Radius="8"/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <ContentControl Margin="12,12,12,12" Style="{StaticResource BoardStyle}"/>
+        </Grid>
+
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <Grid Width="100" Height="100" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10,10,10,10">
+                <Rectangle Fill="Black" Margin="8" Opacity="0.6">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="8"/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <ContentControl Margin="12,12,12,12" Style="{StaticResource InnerMatrix3x3Style}" />
+            </Grid>
+
+            <Grid Width="100" Height="50" VerticalAlignment="Top"  HorizontalAlignment="Right" Margin="10,0,10,0">
+                <Rectangle Fill="Black" Margin="8" Opacity="0.6">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="8"/>
+                    </Rectangle.Effect>
+                </Rectangle>
+            </Grid>
+        </StackPanel>
+
     </Grid>
 </Window>
