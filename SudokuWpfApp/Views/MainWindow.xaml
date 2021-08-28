@@ -4,12 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SudokuWpfApp.Views"
+        xmlns:vm="clr-namespace:SudokuWpfApp.ViewModels"
+        xmlns:cnv="clr-namespace:SudokuWpfApp.WpfConverters"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="533" Background="{DynamicResource backgroundBrush}">
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
     <Window.Resources>
 
         <ImageSource x:Key="backgroundImageSource">pack://siteoforigin:,,,/background.jpg</ImageSource>
         <ImageBrush x:Key="backgroundBrush" ImageSource="{DynamicResource backgroundImageSource}" Stretch="UniformToFill"></ImageBrush>
+
+        <cnv:CellViewModelToTextBrushConverter x:Key="CellTextColorConverter"></cnv:CellViewModelToTextBrushConverter>
 
         <Style x:Key="CellButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Foreground" Value="Black" />
@@ -19,7 +26,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Grid>
-                            <TextBlock TextAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="{Binding DigitAsString}" Foreground="{Binding Converter={StaticResource CellTextColorConverter}}" FontFamily="Cooper Black" FontSize="24"></TextBlock>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -43,7 +50,7 @@
                 <Setter.Value>
                     <ControlTemplate>
                         <Border BorderThickness="1" BorderBrush="White">
-                        <Grid>
+                            <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -54,16 +61,16 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <ContentControl Grid.Row="0" Grid.Column="0" Style="{StaticResource CellStyle}"/>
-                            <ContentControl Grid.Row="0" Grid.Column="1" Style="{StaticResource CellStyle}"/>
-                            <ContentControl Grid.Row="0" Grid.Column="2" Style="{StaticResource CellStyle}"/>
-                            <ContentControl Grid.Row="1" Grid.Column="0" Style="{StaticResource CellStyle}"/>
-                            <ContentControl Grid.Row="1" Grid.Column="1" Style="{StaticResource CellStyle}"/>
-                            <ContentControl Grid.Row="1" Grid.Column="2" Style="{StaticResource CellStyle}"/>
-                            <ContentControl Grid.Row="2" Grid.Column="0" Style="{StaticResource CellStyle}"/>
-                            <ContentControl Grid.Row="2" Grid.Column="1" Style="{StaticResource CellStyle}"/>
-                            <ContentControl Grid.Row="2" Grid.Column="2" Style="{StaticResource CellStyle}"/>
-                        </Grid>
+                                <ContentControl Grid.Row="0" Grid.Column="0" Style="{StaticResource CellStyle}" DataContext="{Binding Cells[0]}"/>
+                                <ContentControl Grid.Row="0" Grid.Column="1" Style="{StaticResource CellStyle}" DataContext="{Binding Cells[1]}"/>
+                                <ContentControl Grid.Row="0" Grid.Column="2" Style="{StaticResource CellStyle}" DataContext="{Binding Cells[2]}"/>
+                                <ContentControl Grid.Row="1" Grid.Column="0" Style="{StaticResource CellStyle}" DataContext="{Binding Cells[3]}"/>
+                                <ContentControl Grid.Row="1" Grid.Column="1" Style="{StaticResource CellStyle}" DataContext="{Binding Cells[4]}"/>
+                                <ContentControl Grid.Row="1" Grid.Column="2" Style="{StaticResource CellStyle}" DataContext="{Binding Cells[5]}"/>
+                                <ContentControl Grid.Row="2" Grid.Column="0" Style="{StaticResource CellStyle}" DataContext="{Binding Cells[6]}"/>
+                                <ContentControl Grid.Row="2" Grid.Column="1" Style="{StaticResource CellStyle}" DataContext="{Binding Cells[7]}"/>
+                                <ContentControl Grid.Row="2" Grid.Column="2" Style="{StaticResource CellStyle}" DataContext="{Binding Cells[8]}"/>
+                            </Grid>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -86,15 +93,62 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <ContentControl Grid.Row="0" Grid.Column="0" Style="{StaticResource InnerMatrix3x3Style}" />
-                                <ContentControl Grid.Row="0" Grid.Column="1" Style="{StaticResource InnerMatrix3x3Style}" />
-                                <ContentControl Grid.Row="0" Grid.Column="2" Style="{StaticResource InnerMatrix3x3Style}" />
-                                <ContentControl Grid.Row="1" Grid.Column="0" Style="{StaticResource InnerMatrix3x3Style}" />
-                                <ContentControl Grid.Row="1" Grid.Column="1" Style="{StaticResource InnerMatrix3x3Style}" />
-                                <ContentControl Grid.Row="1" Grid.Column="2" Style="{StaticResource InnerMatrix3x3Style}" />
-                                <ContentControl Grid.Row="2" Grid.Column="0" Style="{StaticResource InnerMatrix3x3Style}" />
-                                <ContentControl Grid.Row="2" Grid.Column="1" Style="{StaticResource InnerMatrix3x3Style}" />
-                                <ContentControl Grid.Row="2" Grid.Column="2" Style="{StaticResource InnerMatrix3x3Style}" />
+                                <ContentControl Grid.Row="0" Grid.Column="0" Style="{StaticResource InnerMatrix3x3Style}" DataContext="{Binding Matrix3x3[0]}" />
+                                <ContentControl Grid.Row="0" Grid.Column="1" Style="{StaticResource InnerMatrix3x3Style}" DataContext="{Binding Matrix3x3[1]}" />
+                                <ContentControl Grid.Row="0" Grid.Column="2" Style="{StaticResource InnerMatrix3x3Style}" DataContext="{Binding Matrix3x3[2]}" />
+                                <ContentControl Grid.Row="1" Grid.Column="0" Style="{StaticResource InnerMatrix3x3Style}" DataContext="{Binding Matrix3x3[3]}" />
+                                <ContentControl Grid.Row="1" Grid.Column="1" Style="{StaticResource InnerMatrix3x3Style}" DataContext="{Binding Matrix3x3[4]}" />
+                                <ContentControl Grid.Row="1" Grid.Column="2" Style="{StaticResource InnerMatrix3x3Style}" DataContext="{Binding Matrix3x3[5]}" />
+                                <ContentControl Grid.Row="2" Grid.Column="0" Style="{StaticResource InnerMatrix3x3Style}" DataContext="{Binding Matrix3x3[6]}" />
+                                <ContentControl Grid.Row="2" Grid.Column="1" Style="{StaticResource InnerMatrix3x3Style}" DataContext="{Binding Matrix3x3[7]}" />
+                                <ContentControl Grid.Row="2" Grid.Column="2" Style="{StaticResource InnerMatrix3x3Style}" DataContext="{Binding Matrix3x3[8]}" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DigitSelectorButton" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="{Binding .}" Foreground="White" FontFamily="Cooper Black" FontSize="18"></TextBlock>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="DigitSelector" TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border BorderThickness="1" BorderBrush="White">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource DigitSelectorButton}" DataContext="1" />
+                                <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource DigitSelectorButton}" DataContext="2" />
+                                <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource DigitSelectorButton}" DataContext="3" />
+                                <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource DigitSelectorButton}" DataContext="4" />
+                                <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource DigitSelectorButton}" DataContext="5" />
+                                <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource DigitSelectorButton}" DataContext="6" />
+                                <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource DigitSelectorButton}" DataContext="7" />
+                                <Button Grid.Row="2" Grid.Column="1" Style="{StaticResource DigitSelectorButton}" DataContext="8" />
+                                <Button Grid.Row="2" Grid.Column="2" Style="{StaticResource DigitSelectorButton}" DataContext="9" />
                             </Grid>
                         </Border>
                     </ControlTemplate>
@@ -115,7 +169,7 @@
                     <BlurEffect Radius="8"/>
                 </Rectangle.Effect>
             </Rectangle>
-            <ContentControl Margin="12,12,12,12" Style="{StaticResource BoardStyle}"/>
+            <ContentControl Margin="12,12,12,12" Style="{StaticResource BoardStyle}" DataContext="{Binding Board}"/>
         </Grid>
 
         <StackPanel Grid.Column="1" Orientation="Vertical">
@@ -125,7 +179,7 @@
                         <BlurEffect Radius="8"/>
                     </Rectangle.Effect>
                 </Rectangle>
-                <ContentControl Margin="12,12,12,12" Style="{StaticResource InnerMatrix3x3Style}" />
+                <ContentControl Margin="12,12,12,12" Style="{StaticResource DigitSelector}" />
             </Grid>
 
             <Grid Width="Auto" Height="Auto" VerticalAlignment="Top"  HorizontalAlignment="Center" Margin="10,0,10,0">

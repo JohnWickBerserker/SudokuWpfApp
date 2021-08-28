@@ -8,8 +8,7 @@ namespace SudokuWpfApp.ViewModels
 {
     class CellViewModel
     {
-        public bool HasDigit { get; set; }
-        public int Digit { get; set; }
+        public string DigitAsString { get; set; }
         public bool IsFixed { get; set; }
         public bool IsBreakingRules { get; set; }
         public bool IsHighlighted { get; set; }
