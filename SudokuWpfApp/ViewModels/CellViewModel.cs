@@ -1,20 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Windows.Input;
 
 namespace SudokuWpfApp.ViewModels
 {
     class CellViewModel
     {
+        public CellViewModel()
+        {
+            for (var i = 0; i < 9; i++)
+            {
+                Hints[i] = new HintViewModel { IsSet = false, IsBreakingRules = false };
+            }
+        }
+
         public string DigitAsString { get; set; }
+
         public bool IsFixed { get; set; }
+
         public bool IsBreakingRules { get; set; }
+
         public bool IsHighlighted { get; set; }
-        public Dictionary<int, HintViewModel> Hints { get; set; } = new Dictionary<int, HintViewModel>();
-        // event MouseEnter - viewmodel responsibility
-        // event MouseLeave - viewmodel responsibility
-        // event MouseClick - involves logic
+
+        public bool DigitIsVisible { get; set; }
+
+        public bool HintsIsVisible { get; set; }
+
+        public HintViewModel[] Hints { get; set; } = new HintViewModel[9];
+
+        public void OnCellMouseDown()
+        {
+            Trace.WriteLine("event Cell MouseDown");
+        }
     }
 }

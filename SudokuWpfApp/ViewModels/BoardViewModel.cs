@@ -37,11 +37,20 @@ namespace SudokuWpfApp.ViewModels
                     var cell = Matrix3x3[matrixIndex].Cells[cellIndex];
                     cell.DigitAsString = example[i, j] == 0 ? string.Empty : example[i, j].ToString();
                     cell.IsFixed = example[i, j] != 0;
+                    cell.DigitIsVisible = example[i, j] != 0;
                 }
             }
             Matrix3x3[8].Cells[3].DigitAsString = "4";
+            Matrix3x3[8].Cells[3].DigitIsVisible = true;
             Matrix3x3[0].Cells[0].DigitAsString = "5";
             Matrix3x3[0].Cells[0].IsBreakingRules = true;
+            Matrix3x3[0].Cells[0].DigitIsVisible = true;
+            Matrix3x3[0].Cells[0].IsHighlighted = true;
+
+            Matrix3x3[0].Cells[4].HintsIsVisible = true;
+            Matrix3x3[0].Cells[4].Hints[3].IsSet = true;
+            Matrix3x3[0].Cells[4].Hints[3].IsBreakingRules = true;
+            Matrix3x3[0].Cells[4].Hints[3].IsHighlighted = true;
         }
     }
 }

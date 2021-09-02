@@ -8,7 +8,8 @@ namespace SudokuWpfApp.ViewModels
 {
     class HintViewModel
     {
-        bool IsSet { get; set; }
-        bool IsBreakingRules { get; set; }
+        public bool IsSet { get; set; }
+        public bool IsBreakingRules { get; set; }
+        public bool IsHighlighted { get; set; }
     }
 }
