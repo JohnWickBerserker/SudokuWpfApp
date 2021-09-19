@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mext="clr-namespace:SudokuWpfApp.MarkupExtensions">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="CellHints.xaml" />
+        <ResourceDictionary>
+
+            <Style x:Key="CellButtonStyle" TargetType="{x:Type ContentControl}">
+                <Setter Property="Visibility"  Value="{Binding Path=DigitIsVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <Setter Property="Foreground" Value="Black" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Grid Background="{Binding Path=IsHighlighted, Converter={StaticResource HighlightedToBgBrushConverter}}">
+                                <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="{Binding DigitAsString}" FontFamily="Cooper Black" FontSize="24">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource CellTextColorConverter}" Mode="OneWay">
+                                            <MultiBinding.Bindings>
+                                                <Binding Path="IsFixed"/>
+                                                <Binding Path="IsBreakingRules"/>
+                                            </MultiBinding.Bindings>
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="CellStyle" TargetType="{x:Type ContentControl}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Border BorderBrush="White" BorderThickness="1">
+                                <Grid MouseDown="{mext:MethodBinding OnCellMouseDown}" Background="#00000000">
+                                    <ContentControl Style="{StaticResource CellButtonStyle}" />
+                                    <ContentControl Style="{StaticResource HintsStyle}"/>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

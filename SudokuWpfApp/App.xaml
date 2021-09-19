@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:SudokuWpfApp"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="\Views\Converters.xaml" />
     </Application.Resources>
 </Application>
