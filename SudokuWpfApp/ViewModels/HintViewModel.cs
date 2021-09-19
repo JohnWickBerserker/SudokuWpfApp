@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace SudokuWpfApp.ViewModels
 {
-    class HintViewModel
+    class HintViewModel : INotifyPropertyChanged
     {
         public bool IsSet { get; set; }
         public bool IsBreakingRules { get; set; }
         public bool IsHighlighted { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

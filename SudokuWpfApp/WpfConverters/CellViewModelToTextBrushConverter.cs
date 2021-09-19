@@ -7,30 +7,24 @@ using System.Windows.Media;
 namespace SudokuWpfApp.WpfConverters
 {
     [ValueConversion(typeof(CellViewModel), typeof(SolidColorBrush))]
-    public class CellViewModelToTextBrushConverter : IValueConverter
+    public class CellViewModelToTextBrushConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
         {
-            var cell = value as CellViewModel;
-            if (cell != null)
+            var isFixed = (bool)value[0];
+            var isBreakingRules = (bool)value[1];
+            if (isFixed)
             {
-                if (cell.IsFixed)
-                {
-                    return new SolidColorBrush(Colors.White);
-                }
-                if (cell.IsBreakingRules)
-                {
-                    return new SolidColorBrush(Colors.Orange);
-                }
-                return new SolidColorBrush(Color.FromRgb(170, 170, 170));
+                return new SolidColorBrush(Colors.White);
             }
-            else
+            if (isBreakingRules)
             {
-                return new SolidColorBrush(Colors.Black);
+                return new SolidColorBrush(Colors.Orange);
             }
+            return new SolidColorBrush(Color.FromRgb(150, 210, 150));
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

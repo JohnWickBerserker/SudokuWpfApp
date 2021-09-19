@@ -8,7 +8,7 @@
         xmlns:cnv="clr-namespace:SudokuWpfApp.WpfConverters"
         xmlns:mext="clr-namespace:SudokuWpfApp.MarkupExtensions"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="533" Background="{DynamicResource backgroundBrush}">
+        Title="Sudoku" Height="450" Width="533" Background="{DynamicResource backgroundBrush}">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
@@ -18,11 +18,10 @@
         <ImageBrush x:Key="backgroundBrush" ImageSource="{DynamicResource backgroundImageSource}" Stretch="UniformToFill"></ImageBrush>
 
         <cnv:CellViewModelToTextBrushConverter x:Key="CellTextColorConverter"></cnv:CellViewModelToTextBrushConverter>
-        <cnv:CellViewModelToBgBrushConverter x:Key="CellBgColorConverter"></cnv:CellViewModelToBgBrushConverter>
-        <cnv:HintViewModelToTextBrushConverter x:Key="HintTextColorConverter"></cnv:HintViewModelToTextBrushConverter>
-        <cnv:HintViewModelToBgBrushConverter x:Key="HintBgColorConverter"></cnv:HintViewModelToBgBrushConverter>
         <cnv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></cnv:BoolToVisibilityConverter>
         <cnv:ModeToBgColorConverter x:Key="ModeToBgColorConverter"></cnv:ModeToBgColorConverter>
+        <cnv:HighlightedToBgBrushConverter x:Key="HighlightedToBgBrushConverter" ></cnv:HighlightedToBgBrushConverter>
+        <cnv:BreakingRulesToTextBrushConverter x:Key="BreakingRulesToTextBrushConverter" ></cnv:BreakingRulesToTextBrushConverter>
         
         <Style x:Key="CellButtonStyle" TargetType="{x:Type ContentControl}">
             <Setter Property="Visibility"  Value="{Binding Path=DigitIsVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -32,8 +31,17 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Grid Background="{Binding Converter={StaticResource CellBgColorConverter}}">
-                            <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="{Binding DigitAsString}" Foreground="{Binding Converter={StaticResource CellTextColorConverter}}" FontFamily="Cooper Black" FontSize="24"></TextBlock>
+                        <Grid Background="{Binding Path=IsHighlighted, Converter={StaticResource HighlightedToBgBrushConverter}}">
+                            <TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="{Binding DigitAsString}" FontFamily="Cooper Black" FontSize="24">
+                                <TextBlock.Foreground>
+                                    <MultiBinding Converter="{StaticResource CellTextColorConverter}" Mode="OneWay">
+                                        <MultiBinding.Bindings>
+                                            <Binding Path="IsFixed"/>
+                                            <Binding Path="IsBreakingRules"/>
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </TextBlock.Foreground>
+                            </TextBlock>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -41,8 +49,8 @@
         </Style>
 
         <Style x:Key="HintStyle" TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{Binding Converter={StaticResource HintTextColorConverter}}" />
-            <Setter Property="Background" Value="{Binding Converter={StaticResource HintBgColorConverter}}" />
+            <Setter Property="Foreground" Value="{Binding Path=IsBreakingRules, Converter={StaticResource BreakingRulesToTextBrushConverter}}" />
+            <Setter Property="Background" Value="{Binding Path=IsHighlighted, Converter={StaticResource HighlightedToBgBrushConverter}}" />
             <Setter Property="FontSize" Value="10" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="FontFamily" Value="Cooper Black" />

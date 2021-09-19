@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SudokuWpfApp.Core
 {
@@ -10,15 +11,44 @@ namespace SudokuWpfApp.Core
 
         public int Digit => _digit;
         public bool HasDigit => Digit > 0 && Digit < 10;
-        public void SetDigit(int digit) => this._digit = digit;
-        public void RemoveDigit() => this._digit = default;
-
-        public bool IsFixed() => _fixed;
-        public void FixDigit() => _fixed = true;
-        public void UnfixDigit() => _fixed = false;
-
+        public bool IsFixed => _fixed;
         public IReadOnlySet<int> Hints => _hints;
-        public void SetHint(int digit) => _hints.Add(digit);
-        public void RemoveHint(int digit) => _hints.Remove(digit);
+
+        public event Action<Cell> DigitChanged;
+        public event Action<Cell> FixedChanged;
+        public event Action<Cell> HintsChanged;
+
+        public void SetDigit(int digit)
+        {
+            this._digit = digit;
+            DigitChanged?.Invoke(this);
+        }
+        public void RemoveDigit()
+        {
+            this._digit = default;
+            DigitChanged?.Invoke(this);
+        }
+
+        public void FixDigit()
+        {
+            _fixed = true;
+            FixedChanged?.Invoke(this);
+        }
+        public void UnfixDigit()
+        {
+            _fixed = false;
+            FixedChanged?.Invoke(this);
+        }
+
+        public void SetHint(int digit)
+        {
+            _hints.Add(digit);
+            HintsChanged?.Invoke(this);
+        }
+        public void RemoveHint(int digit)
+        {
+            _hints.Remove(digit);
+            HintsChanged?.Invoke(this);
+        }
     }
 }

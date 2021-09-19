@@ -1,16 +1,25 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
 
 namespace SudokuWpfApp.ViewModels
 {
-    class DigitSelectorBtnViewModel
+    class DigitSelectorBtnViewModel : INotifyPropertyChanged
     {
-        public string Digit { get; set; }
+        private readonly MainViewModel main;
+
+        public DigitSelectorBtnViewModel(MainViewModel main)
+        {
+            this.main = main;
+        }
+
+        public int Digit { get; set; }
 
         public bool IsSelected { get; set; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public void OnMouseDown()
         {
-            Trace.WriteLine("event DigitSelectorBtn MouseDown");
+            main.SelectDigit(Digit);
         }
     }
 }

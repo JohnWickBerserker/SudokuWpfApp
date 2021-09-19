@@ -13,5 +13,7 @@
             RowIndex = rowIndex;
             ColumnIndex = columnIndex;
         }
+
+        public static CellPosition Invalid => new CellPosition(-1, -1);
     }
 }
