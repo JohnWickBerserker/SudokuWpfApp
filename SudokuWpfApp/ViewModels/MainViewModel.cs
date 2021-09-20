@@ -27,6 +27,7 @@ namespace SudokuWpfApp.ViewModels
         public bool MainModeIsOn { get; set; } = true;
 
         public bool HintModeIsOn { get; set; }
+        public int OptionsWindowWidth { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -63,6 +64,62 @@ namespace SudokuWpfApp.ViewModels
         {
             MainModeIsOn = false;
             HintModeIsOn = true;
+        }
+
+        public void ToggleOptions()
+        {
+            if (OptionsWindowWidth == 0)
+            {
+                OptionsWindowWidth = 150;
+            }
+            else
+            {
+                OptionsWindowWidth = 0;
+            }
+        }
+
+        public void FixDigits()
+        {
+            var cells = Board.Core.AllCells().Where(x => x.HasDigit && !x.IsFixed);
+            foreach (var i in cells)
+            {
+                i.FixDigit();
+            }
+        }
+
+        public void UnfixDigits()
+        {
+            var cells = Board.Core.AllCells().Where(x => x.HasDigit && x.IsFixed);
+            foreach (var i in cells)
+            {
+                i.UnfixDigit();
+            }
+        }
+
+        public void ClearDigitsAndHints()
+        {
+            ClearUnfixedDigits();
+            ClearHints();
+        }
+
+        private void ClearUnfixedDigits()
+        {
+            var cells = Board.Core.AllCells().Where(x => x.HasDigit && !x.IsFixed);
+            foreach (var i in cells)
+            {
+                i.RemoveDigit();
+            }
+        }
+
+        private void ClearHints()
+        {
+            foreach (var i in Board.Core.AllCells())
+            {
+                for (var h = 1; h <= 9; h++)
+                {
+                    i.RemoveHint(h);
+                }
+            }
         }
 
         private void OnCellMouseDownWhenMainMode(CellViewModel cell)

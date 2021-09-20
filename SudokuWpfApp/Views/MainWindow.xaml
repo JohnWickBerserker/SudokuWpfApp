@@ -8,63 +8,93 @@
         xmlns:cnv="clr-namespace:SudokuWpfApp.WpfConverters"
         xmlns:mext="clr-namespace:SudokuWpfApp.MarkupExtensions"
         mc:Ignorable="d"
-        Title="Sudoku" Height="450" Width="533" Background="{DynamicResource backgroundBrush}">
+        Title="Sudoku" Height="450" Width="580" Background="{DynamicResource backgroundBrush}">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                
+
                 <ResourceDictionary Source="BackgroundBrush.xaml" />
                 <ResourceDictionary Source="DigitSelector.xaml" />
                 <ResourceDictionary Source="Board.xaml" />
-                
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="120"/>
-        </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
 
-        <Grid Width="400" Height="400">
-            <Rectangle Fill="Black" Margin="8" Opacity="0.6">
-                <Rectangle.Effect>
-                    <BlurEffect Radius="8"/>
-                </Rectangle.Effect>
-            </Rectangle>
-            <ContentControl Margin="12,12,12,12" Style="{StaticResource BoardStyle}" DataContext="{Binding Board}"/>
-        </Grid>
-
-        <StackPanel Grid.Column="1" Orientation="Vertical">
-            <Grid Width="100" Height="100" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10,10,10,10">
+            <Grid Width="400" Height="400">
                 <Rectangle Fill="Black" Margin="8" Opacity="0.6">
                     <Rectangle.Effect>
                         <BlurEffect Radius="8"/>
                     </Rectangle.Effect>
                 </Rectangle>
-                <ContentControl Margin="12,12,12,12" Style="{StaticResource DigitSelector}" />
+                <ContentControl Margin="12,12,12,12" Style="{StaticResource BoardStyle}" DataContext="{Binding Board}"/>
             </Grid>
 
-            <Grid Width="Auto" Height="Auto" VerticalAlignment="Top"  HorizontalAlignment="Center" Margin="10,0,10,0">
-                <Rectangle Fill="Black" Margin="8" Opacity="0.6">
-                    <Rectangle.Effect>
-                        <BlurEffect Radius="8"/>
-                    </Rectangle.Effect>
-                </Rectangle>
-                <StackPanel Orientation="Horizontal" Margin="15,15,15,15">
-                    <Grid MouseDown="{mext:MethodBinding OnMainModeMouseDown}" Background="{Binding Path=MainModeIsOn, Converter={StaticResource ModeToBgColorConverter}}">
-                        <Image Width="24" Height="24" Margin="4,4,4,4" Source="pack://siteoforigin:,,,/main-mode.png"/>
+            <StackPanel Grid.Column="1" Orientation="Vertical">
+                <Grid Width="100" Height="100" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10,10,10,10">
+                    <Rectangle Fill="Black" Margin="8" Opacity="0.6">
+                        <Rectangle.Effect>
+                            <BlurEffect Radius="8"/>
+                        </Rectangle.Effect>
+                    </Rectangle>
+                    <ContentControl Margin="12,12,12,12" Style="{StaticResource DigitSelector}" />
+                </Grid>
+
+                <Grid Width="Auto" Height="Auto" VerticalAlignment="Top"  HorizontalAlignment="Center" Margin="10,0,10,0">
+                    <Rectangle Fill="Black" Margin="8" Opacity="0.6">
+                        <Rectangle.Effect>
+                            <BlurEffect Radius="8"/>
+                        </Rectangle.Effect>
+                    </Rectangle>
+                    <StackPanel Orientation="Horizontal" Margin="15,15,15,15">
+                        <Grid MouseDown="{mext:MethodBinding OnMainModeMouseDown}" Background="{Binding Path=MainModeIsOn, Converter={StaticResource ModeToBgColorConverter}}">
+                            <Image Width="24" Height="24" Margin="4,4,4,4" Source="pack://siteoforigin:,,,/main-mode.png"/>
+                        </Grid>
+                        <Grid MouseDown="{mext:MethodBinding OnHintModeMouseDown}" Background="{Binding Path=HintModeIsOn, Converter={StaticResource ModeToBgColorConverter}}">
+                            <Image Width="24" Height="24" Margin="4,4,4,4" Source="pack://siteoforigin:,,,/hint-mode.png"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+
+        </Grid>
+        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+            <Grid Width="{Binding OptionsWindowWidth}">
+                <Rectangle Fill="Black" Opacity="0.8"></Rectangle>
+                <StackPanel>
+                    <Grid Margin="10,10,10,10" MouseDown="{mext:MethodBinding FixDigits}">
+                        <Rectangle Height="20" Fill="Gray" Opacity="0.7"></Rectangle>
+                        <TextBlock Text="Fix digits" TextAlignment="Center" Foreground="White"></TextBlock>
                     </Grid>
-                    <Grid MouseDown="{mext:MethodBinding OnHintModeMouseDown}" Background="{Binding Path=HintModeIsOn, Converter={StaticResource ModeToBgColorConverter}}">
-                        <Image Width="24" Height="24" Margin="4,4,4,4" Source="pack://siteoforigin:,,,/hint-mode.png"/>
+                    <Grid Margin="10,0,10,10" MouseDown="{mext:MethodBinding UnfixDigits}">
+                        <Rectangle Height="20" Fill="Gray" Opacity="0.7"></Rectangle>
+                        <TextBlock Text="Unfix digits" TextAlignment="Center" Foreground="White"></TextBlock>
+                    </Grid>
+                    <Grid Margin="10,0,10,10" MouseDown="{mext:MethodBinding ClearDigitsAndHints}">
+                        <Rectangle Height="20" Fill="Gray" Opacity="0.7"></Rectangle>
+                        <TextBlock Text="Clear digits and hints" TextAlignment="Center" Foreground="White"></TextBlock>
                     </Grid>
                 </StackPanel>
             </Grid>
+            <StackPanel>
+                <Grid RenderTransformOrigin="0.5,0.5" MouseDown="{mext:MethodBinding ToggleOptions}">
+                    <Rectangle Fill="Black" Opacity="0.8"></Rectangle>
+                    <TextBlock Foreground="White" Text="OPTIONS" Margin="2,5,2,5" SnapsToDevicePixels="True">
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="90"/>
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </Grid>
+            </StackPanel>
         </StackPanel>
-
     </Grid>
 </Window>

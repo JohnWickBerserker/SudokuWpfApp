@@ -108,6 +108,18 @@ namespace SudokuWpfApp.Core
             return GetCellsRelatedTo(pos);
         }
 
+
+        public IEnumerable<Cell> AllCells()
+        {
+            for (var i = 0; i <= CellPosition.MaxRowIndex; i++)
+            {
+                for (var j = 0; j <= CellPosition.MaxColumnIndex; j++)
+                {
+                    yield return _cells[i, j];
+                }
+            }
+        }
+
         private static void AddToSet<T>(IEnumerable<T> items, ISet<T> set)
         {
             foreach (var i in items)
