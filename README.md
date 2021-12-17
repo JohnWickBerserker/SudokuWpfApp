@@ -1,3 +1,3 @@
 # SudokuWpfApp
-about sudoku game.
+sudoku game.
 a WPF app.
